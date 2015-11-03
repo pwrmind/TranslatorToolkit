@@ -1,12 +1,6 @@
 <?php
     echo 'Ho ho ho';
-    $url = "http://frengly.com?"
-    ."src=en&"
-    ."dest=ru&"
-    ."text=Hello%20world&"
-    ."email=babanoff@bk.ru&"
-    ."password=fre-\$w0rdF1sh&"
-    ."outformat=json";
+    $url = "";
 
     echo $url;
 

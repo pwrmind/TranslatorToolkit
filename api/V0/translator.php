@@ -29,13 +29,7 @@
     function translateInFrengly( $sentence ) {
         $translatedSentence = "";
         $url = "";
-        $url = "http://frengly.com?"
-        ."src=en&"
-        ."dest=ru&"
-        ."text=".$sentence."&"
-        ."email=babanoff@bk.ru&"
-        ."password=fre-\$w0rdF1sh&"
-        ."outformat=json";
+        $url = "";
 
         $output =  "{ translation: 'get requesr' }";
         //echo $output;
