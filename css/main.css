@@ -1,0 +1,150 @@
+.workspace {
+    padding: 4px;
+    margin: 0px auto;
+    width: 840px;
+    /*height: 400px;*/
+    background-color: White;
+    box-shadow: 0px 0px 2px 0px rgba(0,0,0,1);
+        font-family: Arial,sans-serif;
+    font-size: 14px;
+}
+
+.workspace-panel {
+    width: 840px;
+    height: 32px;
+    background-color: Gainsboro;
+    /* box-shadow: 0px 0px 2px 0px rgba(0,0,0,1); */
+    position: relative;
+    padding: 4px;
+    margin: -4px 0px 0px -4px;
+}
+
+
+ 
+#editor {
+    -webkit-user-select: none;
+    width: 848px;
+    /*border:1px dotted;*/
+    float: left;
+    box-sizing:border-box;
+    background-color: Whitesmoke;
+    box-shadow: inset 0px 0px 2px 0px rgba(0,0,0,1);
+    overflow: hidden;
+    margin: 0px -4px 0px -4px;
+}
+
+.editor-panel {
+    height: 32px;
+    background-color: Gainsboro;
+    box-shadow: 0px 0px 2px 0px rgba(0,0,0,1);
+    position: relative;
+    padding: 4px;
+}
+            
+.button {
+    font:  12px sans-serif;
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+    border: 1px solid gray;
+    border-radius: 2px;
+    line-height: 32px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: lightgray;
+}
+
+.button-back, .button-forth {
+    width: 120px;
+}
+
+.button-processing-text {
+    display: inline-block;
+    width: 120px;
+}
+
+.button-apply-translation, .button-cancel-translation {
+    display: inline-block;
+    width: 120px;
+}
+
+.block-back-and-forth {
+    display: inline-block;
+}
+
+
+.editor-machine-translation {
+    height: 72px;
+    padding: 4px;
+    /*display: none;*/
+}
+
+.editor-manual-translation {
+    border-top: 1px solid Gainsboro;
+    height: 72px;
+    padding: 4px;
+    overflow: hidden;
+    outline: none;
+    display:block;
+    width: 838px;
+    resize:none;
+    font-family: Arial,sans-serif;
+    font-size: 14px;
+}
+
+.editor-block-manual-translation > textarea {
+    width: 100%;
+    height: 100%;
+    background-color: Whitesmoke;
+    font-family: inherit;
+    font-size: inherit;
+    border:0px;
+    outline: none;
+    padding: 4px;
+    margin: 0;
+    resize: none;
+    white-space: pre-wrap;
+    overflow:hidden;
+}
+
+.editing {
+    /* border: 1px dotted red; */
+    border-radius: 2px;
+    background-color: rgba(120, 255, 74, 0.6);
+}
+
+.editor + .sentence {
+    /*color: #999;*/
+}
+
+.paragraph {
+    margin: 2px 0px 2px 0px;
+}
+            
+.sentence {
+    display: inline;
+    /*background-color: #666;*/
+}
+        
+.sentence-original, .sentence-machine-translation, .sentence-manual-translation {
+    display: none;
+}
+        
+.sentence-displayed {
+    display: inline !important;
+}
+            
+.source-text {
+    height: 200px;
+    font-family: inherit;
+    font-size: inherit;
+    width: 836px;
+    border: none;
+    padding:0;
+    resize:none;
+    outline:0px !important;
+    -webkit-appearance:none;
+}

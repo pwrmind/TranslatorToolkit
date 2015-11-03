@@ -1,0 +1,79 @@
+{
+    "id": "vxr3",
+    "type": "article",
+    "selectedSentence": {},
+    "paragraphs": [
+        {
+            "id": "vxrgf3",
+            "type": "paragraph",
+            "sensences": [
+                {
+                    "id": "x23cder",
+                    "type": "sensence",
+                    "displayed": "original",
+                    "source": {
+                        "original": "History is the discovery, collection, organization, analysis and presentation of information about past events.",
+                        "machine": "История открытия, коллекция, организация, анализ и представление информации о последних событиях.",
+                        "manual": "История открытия, коллекция, организация, анализ и представление информации о последних событиях."
+                    }
+                },
+                {
+                    "id": "x23chjer",
+                    "type": "sensence",
+                    "displayed": "machine",
+                    "source": {
+                        "original": "Scholars who write about history are called historians.",
+                        "machine": "Ученые, которые пишут об истории называют историки.",
+                        "manual": "Ученые, которые пишут об истории называют историки."
+                    }
+                },
+                {
+                    "id": "x23tyuer",
+                    "type": "sensence",
+                    "displayed": "manual",
+                    "source": {
+                        "original": "It is a field of knowledge which uses a narrative to examine and analyse the sequence of events, and it sometimes attempts to investigate objectively the patterns of cause and effect that determine events.",
+                        "machine": "Это область знаний, которая использует повествование изучить и проанализировать последовательность событий, и иногда пытается объективно расследовать закономерности причинно-следственных, определяющие события.",
+                        "manual": "Это область знаний, которая использует повествование изучить и проанализировать последовательность событий, и иногда пытается объективно расследовать закономерности причинно-следственных, определяющие события."
+                    }
+                }
+            ]
+        },
+        {
+            "id": "vxrdsgf3",
+            "type": "paragraph",
+            "sensences": [
+                {
+                    "id": "x23cxedr",
+                    "type": "sensence",
+                    "displayed": "original",
+                    "source": {
+                        "original": "Historians debate the nature of history and its usefulness.",
+                        "machine": "Историки спорят о природе истории и его полезности.",
+                        "manual": "Историки спорят о природе истории и его полезности."
+                    }
+                },
+                {
+                    "id": "x23cxeyjr",
+                    "type": "sensence",
+                    "displayed": "machine",
+                    "source": {
+                        "original": "This includes discussing the study of the discipline as an end in itself and as a way of providing \"perspective\" on the problems of the present.",
+                        "machine": "Это включает в себя обсуждение изучение дисциплины в качестве самоцели, а как способ обеспечения «Перспектива» по проблемам современности.",
+                        "manual": "Это включает в себя обсуждение изучение дисциплины в качестве самоцели, а как способ обеспечения \"Перспективы\" по проблемам современности."
+                    }
+                },
+                {
+                    "id": "x23cxfer",
+                    "type": "sensence",
+                    "displayed": "manual",
+                    "source": {
+                        "original": "History can also mean a continuous, typically chronological, record of important or public events or of a particular trend or institution.",
+                        "machine": "История может также означать непрерывный, обычно хронологический, запись важных или общественных мероприятий или определенного тренда или учреждения.",
+                        "manual": "История может также означать непрерывный, обычно хронологический, запись важных или общественных мероприятий или определенного тренда или учреждения."
+                    }
+                }
+            ]
+        }
+    ]
+}
