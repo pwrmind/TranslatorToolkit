@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Translation Toolkit</title>
+    <style>
+        :root {
+            --primary-color: #f5f7fa;
+            --secondary-color: #e4e7eb;
+            --accent-color: #3498db;
+            --accent-hover: #2980b9;
+            --cancel-color: #e74c3c;
+            --cancel-hover: #c0392b;
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --success-color: #2ecc71;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--primary-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--secondary-color);
+        }
+        
+        h1 {
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .description {
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .app-container {
+            display: flex;
+            flex: 1;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .input-section {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        .output-section {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .section-title {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary-color);
+            color: var(--text-primary);
+            font-size: 1.2rem;
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border: 1px solid var(--secondary-color);
+            border-radius: 8px;
+            resize: vertical;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: var(--text-primary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #d5d8dc;
+        }
+        
+        .btn-cancel {
+            background-color: var(--cancel-color);
+            color: white;
+        }
+        
+        .btn-cancel:hover {
+            background-color: var(--cancel-hover);
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .article-display {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid var(--secondary-color);
+            border-radius: 8px;
+            min-height: 300px;
+        }
+        
+        .paragraph {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+        }
+        
+        .paragraph:hover {
+            background-color: rgba(228, 231, 235, 0.3);
+        }
+        
+        .sentence {
+            display: inline-block;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+        
+        .sentence:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+            border-color: rgba(52, 152, 219, 0.3);
+        }
+        
+        .sentence.selected {
+            background-color: rgba(52, 152, 219, 0.2);
+            border-color: var(--accent-color);
+        }
+        
+        .sentence.manual {
+            background-color: rgba(46, 204, 113, 0.15);
+            border-color: rgba(46, 204, 113, 0.3);
+        }
+        
+        .editor-container {
+            margin-top: 20px;
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            padding: 20px;
+            display: none;
+        }
+        
+        .editor-container.active {
+            display: block;
+        }
+        
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .editor-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .editor-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .translation-box {
+            background: white;
+            border-radius: 6px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .translation-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .editor-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--secondary-color);
+        }
+        
+        .keyboard-hint {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Text Translation Toolkit</h1>
+            <p class="description">An intuitive tool for translating and editing text. Click on any sentence to translate it manually.</p>
+        </header>
+        
+        <div class="app-container">
+            <div class="input-section">
+                <h2 class="section-title">Input Text</h2>
+                <textarea id="sourceText" placeholder="Enter or paste your text here...">Hello World. Hello Hell. Hello War.
+Hello World. Hello Hell. Hello War.
+Hello World. Hello Hell. Hello War.</textarea>
+                
+                <div class="button-group">
+                    <button id="processBtn" class="btn btn-primary">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
+                            <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"/>
+                        </svg>
+                        Process Text
+                    </button>
+                    <button id="clearBtn" class="btn btn-secondary">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                        </svg>
+                        Clear
+                    </button>
+                    <button id="sampleBtn" class="btn btn-secondary">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641l2.5-8.5zM6.374 1 4.168 8.5H7.5a.5.5 0 0 1 .478.647L6.78 13.04 11.478 7H8a.5.5 0 0 1-.474-.658L9.306 1H6.374z"/>
+                        </svg>
+                        Load Sample
+                    </button>
+                </div>
+            </div>
+            
+            <div class="output-section">
+                <div class="section-header">
+                    <h2 class="section-title">Translation Editor</h2>
+                    <p class="keyboard-hint">Tip: Use ↑/↓ keys to navigate between sentences</p>
+                </div>
+                
+                <div id="articleDisplay" class="article-display">
+                    <div class="empty-state">
+                        <svg width="64" height="64" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+                            <path d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
+                        </svg>
+                        <h3>No Text Processed</h3>
+                        <p>Enter your text and click "Process Text" to begin</p>
+                    </div>
+                </div>
+                
+                <div id="editor" class="editor-container">
+                    <div class="editor-header">
+                        <div class="editor-title">Edit Translation</div>
+                        <button id="closeEditor" class="btn btn-secondary">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div class="editor-content">
+                        <div class="translation-box">
+                            <span class="translation-label">Original Text</span>
+                            <div id="originalText"></div>
+                        </div>
+                        
+                        <div class="translation-box">
+                            <span class="translation-label">Machine Translation</span>
+                            <div id="machineTranslation">No machine translation available</div>
+                        </div>
+                        
+                        <div class="translation-box">
+                            <span class="translation-label">Your Translation</span>
+                            <textarea id="manualTranslation" placeholder="Enter your translation here..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="editor-footer">
+                        <button id="cancelBtn" class="btn btn-cancel">Cancel</button>
+                        <button id="applyBtn" class="btn btn-success">Apply Translation</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="paragraphCount">0</div>
+                <div class="stat-label">Paragraphs</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="sentenceCount">0</div>
+                <div class="stat-label">Sentences</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="translatedCount">0</div>
+                <div class="stat-label">Translated</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="wordCount">0</div>
+                <div class="stat-label">Words</div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Text Translation Toolkit &copy; 2023 | All translations are processed locally in your browser</p>
+        </footer>
+    </div>
+
+    <script>
+        class TTKHelper {
+            static getUUID() {
+                return 'xxxxxxxx_xxxx_4xxx_yxxx_xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                    const r = Math.random() * 16 | 0;
+                    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+            }
+        }
+
+        class Source {
+            constructor(original = '', machine = '', manual = '') {
+                this.original = original;
+                this.machine = machine;
+                this.manual = manual;
+            }
+        }
+
+        class Sentence {
+            constructor(sourceText = '') {
+                this.id = "sentence_" + TTKHelper.getUUID();
+                this.source = new Source(sourceText);
+                this.type = "sentence";
+                this.displayed = "original";
+            }
+        }
+
+        class Paragraph {
+            constructor(sourceText = '') {
+                this.id = "paragraph_" + TTKHelper.getUUID();
+                this.type = "paragraph";
+                this.sentences = [];
+                
+                // Split text into sentences (simplified version)
+                const sentenceRegex = /[^.!?]+[.!?]+/g;
+                const sentences = sourceText.match(sentenceRegex) || [sourceText];
+                
+                sentences.forEach(sentence => {
+                    this.addSentence(sentence.trim());
+                });
+            }
+            
+            addSentence(sourceText) {
+                const sentence = new Sentence(sourceText);
+                this.sentences.push(sentence);
+            }
+        }
+
+        class Article {
+            constructor(sourceText = '') {
+                this.id = "article_" + TTKHelper.getUUID();
+                this.type = "article";
+                this.selectedSentence = null;
+                this.paragraphs = [];
+                
+                // Split text into paragraphs
+                const paragraphs = sourceText.split(/\n+/).filter(p => p.trim());
+                
+                paragraphs.forEach(paragraph => {
+                    this.addParagraph(paragraph.trim());
+                });
+            }
+            
+            addParagraph(sourceText) {
+                const paragraph = new Paragraph(sourceText);
+                this.paragraphs.push(paragraph);
+            }
+        }
+
+        class App {
+            constructor() {
+                this.article = null;
+                this.currentSentenceIndex = -1;
+                this.currentParagraphIndex = -1;
+                this.initDOM();
+                this.initEvents();
+            }
+            
+            initDOM() {
+                this.sourceTextArea = document.getElementById('sourceText');
+                this.articleDisplay = document.getElementById('articleDisplay');
+                this.editor = document.getElementById('editor');
+                this.originalText = document.getElementById('originalText');
+                this.machineTranslation = document.getElementById('machineTranslation');
+                this.manualTranslation = document.getElementById('manualTranslation');
+                this.paragraphCount = document.getElementById('paragraphCount');
+                this.sentenceCount = document.getElementById('sentenceCount');
+                this.translatedCount = document.getElementById('translatedCount');
+                this.wordCount = document.getElementById('wordCount');
+            }
+            
+            initEvents() {
+                document.getElementById('processBtn').addEventListener('click', () => this.processText());
+                document.getElementById('clearBtn').addEventListener('click', () => this.clearText());
+                document.getElementById('sampleBtn').addEventListener('click', () => this.loadSample());
+                document.getElementById('applyBtn').addEventListener('click', () => this.applyTranslation());
+                document.getElementById('cancelBtn').addEventListener('click', () => this.cancelTranslation());
+                document.getElementById('closeEditor').addEventListener('click', () => this.closeEditor());
+                
+                // Keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowDown' && e.ctrlKey) {
+                        e.preventDefault();
+                        this.navigateSentences(1);
+                    } else if (e.key === 'ArrowUp' && e.ctrlKey) {
+                        e.preventDefault();
+                        this.navigateSentences(-1);
+                    }
+                });
+            }
+            
+            processText() {
+                const sourceText = this.sourceTextArea.value.trim();
+                if (!sourceText) return;
+                
+                this.article = new Article(sourceText);
+                this.renderArticle();
+                this.updateStats();
+            }
+            
+            clearText() {
+                this.sourceTextArea.value = '';
+                this.articleDisplay.innerHTML = `
+                    <div class="empty-state">
+                        <svg width="64" height="64" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+                            <path d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8zm0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
+                        </svg>
+                        <h3>No Text Processed</h3>
+                        <p>Enter your text and click "Process Text" to begin</p>
+                    </div>
+                `;
+                this.closeEditor();
+                this.updateStats();
+            }
+            
+            loadSample() {
+                this.sourceTextArea.value = `The Text Translation Toolkit is a powerful application designed to assist with multilingual content creation. 
+
+It automatically breaks down your text into manageable paragraphs and sentences. Each sentence can be individually translated and edited. 
+
+The interface is designed following the 60-30-10 color principle for optimal visual comfort. 
+
+Try clicking on any sentence to start translating!`;
+                this.processText();
+            }
+            
+            renderArticle() {
+                if (!this.article) return;
+                
+                let html = '';
+                
+                this.article.paragraphs.forEach((paragraph, pIndex) => {
+                    html += `<div class="paragraph" id="${paragraph.id}">`;
+                    
+                    paragraph.sentences.forEach((sentence, sIndex) => {
+                        const text = sentence.source[sentence.displayed] || sentence.source.original;
+                        const isManual = sentence.displayed === "manual";
+                        const isSelected = this.article.selectedSentence === sentence;
+                        
+                        html += `<span class="sentence ${isManual ? 'manual' : ''} ${isSelected ? 'selected' : ''}" 
+                                  data-pindex="${pIndex}" 
+                                  data-sindex="${sIndex}"
+                                  id="${sentence.id}">${text}</span>`;
+                    });
+                    
+                    html += '</div>';
+                });
+                
+                this.articleDisplay.innerHTML = html;
+                
+                // Add event listeners to sentences
+                document.querySelectorAll('.sentence').forEach(el => {
+                    el.addEventListener('click', (e) => {
+                        const pIndex = parseInt(e.target.dataset.pindex);
+                        const sIndex = parseInt(e.target.dataset.sindex);
+                        this.selectSentence(pIndex, sIndex);
+                    });
+                });
+            }
+            
+            selectSentence(pIndex, sIndex) {
+                if (!this.article || !this.article.paragraphs[pIndex] || 
+                    !this.article.paragraphs[pIndex].sentences[sIndex]) return;
+                
+                this.currentParagraphIndex = pIndex;
+                this.currentSentenceIndex = sIndex;
+                
+                const sentence = this.article.paragraphs[pIndex].sentences[sIndex];
+                this.article.selectedSentence = sentence;
+                
+                // Update UI
+                document.querySelectorAll('.sentence').forEach(el => el.classList.remove('selected'));
+                document.getElementById(sentence.id).classList.add('selected');
+                
+                // Scroll to sentence
+                document.getElementById(sentence.id).scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center' 
+                });
+                
+                // Show editor
+                this.openEditor(sentence);
+            }
+            
+            navigateSentences(direction) {
+                if (!this.article || this.currentParagraphIndex === -1) return;
+                
+                let newPIndex = this.currentParagraphIndex;
+                let newSIndex = this.currentSentenceIndex + direction;
+                
+                // Handle moving to next/previous paragraph
+                while (newSIndex < 0 || newSIndex >= this.article.paragraphs[newPIndex].sentences.length) {
+                    if (direction > 0) {
+                        // Move to next paragraph
+                        newPIndex++;
+                        if (newPIndex >= this.article.paragraphs.length) {
+                            newPIndex = 0; // Loop to first paragraph
+                        }
+                        newSIndex = 0;
+                    } else {
+                        // Move to previous paragraph
+                        newPIndex--;
+                        if (newPIndex < 0) {
+                            newPIndex = this.article.paragraphs.length - 1; // Loop to last paragraph
+                        }
+                        newSIndex = this.article.paragraphs[newPIndex].sentences.length - 1;
+                    }
+                    
+                    // Found a paragraph with sentences
+                    if (this.article.paragraphs[newPIndex].sentences.length > 0) {
+                        break;
+                    }
+                }
+                
+                this.selectSentence(newPIndex, newSIndex);
+            }
+            
+            openEditor(sentence) {
+                this.originalText.textContent = sentence.source.original;
+                this.manualTranslation.value = sentence.source.manual || '';
+                this.editor.classList.add('active');
+                
+                // Focus on the translation field
+                setTimeout(() => {
+                    this.manualTranslation.focus();
+                }, 100);
+            }
+            
+            closeEditor() {
+                this.editor.classList.remove('active');
+                this.article.selectedSentence = null;
+                document.querySelectorAll('.sentence').forEach(el => el.classList.remove('selected'));
+            }
+            
+            applyTranslation() {
+                if (!this.article || !this.article.selectedSentence) return;
+                
+                const sentence = this.article.selectedSentence;
+                sentence.source.manual = this.manualTranslation.value;
+                
+                if (sentence.source.manual.trim()) {
+                    sentence.displayed = "manual";
+                } else {
+                    sentence.displayed = "original";
+                }
+                
+                this.renderArticle();
+                this.updateStats();
+                this.closeEditor();
+            }
+            
+            cancelTranslation() {
+                this.closeEditor();
+            }
+            
+            updateStats() {
+                if (!this.article) {
+                    this.paragraphCount.textContent = '0';
+                    this.sentenceCount.textContent = '0';
+                    this.translatedCount.textContent = '0';
+                    this.wordCount.textContent = '0';
+                    return;
+                }
+                
+                // Count paragraphs and sentences
+                const paragraphCount = this.article.paragraphs.length;
+                let sentenceCount = 0;
+                let translatedCount = 0;
+                let wordCount = 0;
+                
+                this.article.paragraphs.forEach(paragraph => {
+                    sentenceCount += paragraph.sentences.length;
+                    
+                    paragraph.sentences.forEach(sentence => {
+                        if (sentence.displayed === "manual" && sentence.source.manual.trim()) {
+                            translatedCount++;
+                        }
+                        
+                        // Count words in original text
+                        const words = sentence.source.original.split(/\s+/).filter(word => word.trim());
+                        wordCount += words.length;
+                    });
+                });
+                
+                this.paragraphCount.textContent = paragraphCount;
+                this.sentenceCount.textContent = sentenceCount;
+                this.translatedCount.textContent = translatedCount;
+                this.wordCount.textContent = wordCount;
+            }
+        }
+
+        // Initialize the app when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            const app = new App();
+            // Process sample text on load
+            app.loadSample();
+        });
+    </script>
+</body>
+</html>
